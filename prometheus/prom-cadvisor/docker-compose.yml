@@ -1,0 +1,15 @@
+version: '3.0'
+
+services:
+  cadvisor:
+    image: gcr.io/google-containers/cadvisor:latest
+    container_name: cadvisor
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    devices:
+    - /dev/kmsg:/dev/kmsg
+    ports:
+    - 8080:8080

@@ -1,0 +1,35 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:12
+    environment:
+      POSTGRES_PASSWORD: password
+    volumes:
+      # Creates the posts table, and inserts default posts
+      - ./initialize.sql:/docker-entrypoint-initdb.d/initialize.sql
+    ports:
+      - 5432:5432
+  pgadmin4:
+    image: dpage/pgadmin4:6.20
+    ports:
+      - 8080:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: nicolas@tiflux.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    volumes:
+      # sets up a default server in the pgadmin interface
+      - ./servers.json:/pgadmin4/servers.json
+# web:
+#    build: .
+#    ports:
+#      - 3000:3000
+#    environment:
+#      # Environment vars used for pg node module
+#      PGUSER: postgres
+#      PGHOST: postgres
+#      PGPASSWORD: password
+#      PGDATABASE: my_db
+  redis:
+    image: redis:5-alpine
+    ports:
+      - 6379:6379
